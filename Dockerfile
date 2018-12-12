@@ -13,6 +13,8 @@ RUN apt-get update && \
     git \
     wget \
     curl \
+    openssh-client \
+		openssh-serve \
     libgtk2.0 \
     libgconf-2-4 \
     libasound2 && \
