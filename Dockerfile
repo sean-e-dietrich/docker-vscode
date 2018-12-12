@@ -3,7 +3,7 @@ FROM consol/ubuntu-xfce-vnc
 ENV DEBIAN_FRONTEND=noninteractive \
     VSC_DL_URL=https://go.microsoft.com/fwlink/?LinkID=760868
 
-USER 0
+USER root
 
 RUN apt-get update && \
     apt-get install -y \
@@ -26,6 +26,10 @@ RUN set -xe; \
 	groupadd docker -g 1000; \
 	useradd -m -s /bin/bash -u 1000 -g 1000 -G sudo -p docker docker; \
 	echo 'docker ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+COPY --chown=docker:docker config/.ssh /home/docker/.ssh
+COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY startup.sh /opt/startup.sh
 
 ENV GOSU_VERSION=1.10 \
     GOMPLATE_VERSION=3.0.0
@@ -51,10 +55,7 @@ RUN set -xe; \
 	echo "export VISIBLE=now" >> /etc/profile
 ENV NOTVISIBLE "in users profile"
 
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY startup.sh /opt/startup.sh
-
-USER 1000
+USER docker
 
 RUN mkdir -p $HOME/.vscode/extensions $HOME/.config/Code/User && \
     touch $HOME/.config/Code/storage.json
