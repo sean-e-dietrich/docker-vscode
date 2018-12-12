@@ -14,7 +14,7 @@ RUN apt-get update && \
     wget \
     curl \
     openssh-client \
-		openssh-serve \
+		openssh-server \
     libgtk2.0 \
     libgconf-2-4 \
     libasound2 && \
