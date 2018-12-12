@@ -42,6 +42,7 @@ RUN apt-get update && \
     npm \
     git \
     wget \
+    curl \
     libgtk2.0 \
     libgconf-2-4 \
     libasound2 && \
