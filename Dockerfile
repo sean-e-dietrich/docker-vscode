@@ -5,6 +5,22 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 USER 0
 
+RUN apt-get update && \
+    apt-get install -y \
+    openssl \
+    nodejs \
+    npm \
+    git \
+    wget \
+    curl \
+    libgtk2.0 \
+    libgconf-2-4 \
+    libasound2 && \
+    npm install -g typescript && \
+    wget -O /tmp/vsc.deb $VSC_DL_URL && \
+    apt install -y /tmp/vsc.deb && \
+    rm -rf /tmp/vsc.deb
+
 RUN set -xe; \
 	# Create a regular user/group "docker" (uid = 1000, gid = 1000 ) with access to sudo
 	groupadd docker -g 1000; \
@@ -12,7 +28,7 @@ RUN set -xe; \
 	echo 'docker ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV GOSU_VERSION=1.10 \
-	GOMPLATE_VERSION=3.0.0
+    GOMPLATE_VERSION=3.0.0
 RUN set -xe; \
 	# Install gosu and give access to the docker user primary group to use it.
 	# gosu is used instead of sudo to start the main container process (pid 1) in a docker friendly way.
@@ -34,22 +50,6 @@ RUN set -xe; \
 	sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd; \
 	echo "export VISIBLE=now" >> /etc/profile
 ENV NOTVISIBLE "in users profile"
-
-RUN apt-get update && \
-    apt-get install -y \
-    openssl \
-    nodejs \
-    npm \
-    git \
-    wget \
-    curl \
-    libgtk2.0 \
-    libgconf-2-4 \
-    libasound2 && \
-    npm install -g typescript && \
-    wget -O /tmp/vsc.deb $VSC_DL_URL && \
-    apt install -y /tmp/vsc.deb && \
-    rm -rf /tmp/vsc.deb
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY startup.sh /opt/startup.sh
