@@ -63,7 +63,7 @@ RUN mkdir -p $HOME/.vscode/extensions $HOME/.config/Code/User && \
     touch $HOME/.config/Code/storage.json
 
 # Starter script
-ENTRYPOINT ["/opt/startup.sh"]
+#ENTRYPOINT ["/opt/startup.sh"]
 
 # By default, launch supervisord to keep the container running.
-CMD ["supervisord"]
+#CMD ["supervisord"]
