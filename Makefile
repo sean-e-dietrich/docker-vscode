@@ -4,7 +4,7 @@ APP_NAME = Containerized VSCode
 
 .PHONY: all build tag_latest release app
 
-all: build tag_latest
+all: build serve
 
 build:
 	docker build -t $(NAME):$(VERSION) --rm ./
@@ -14,3 +14,6 @@ tag_latest:
 
 release: build tag_latest app
 	docker push $(NAME)
+
+serve:
+	docker run -d -p 5901:5901 -p 6901:6901 $(NAME):$(VERSION)
